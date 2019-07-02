@@ -10,10 +10,23 @@ var h1 = document.querySelector("h1");
 var resetButton = document.querySelector("#reset");
 var modeButtons = document.querySelectorAll(".mode");
 
+
 init();
 
-function init(){
-	for (var i=0; i < modeButtons.length; i++){ // Difficulty changer
+
+function init(){ // sets up the first game when the page is loaded
+	modeSetup();
+
+	resetButton.addEventListener("click", function(){ // reset button
+		reset();
+	})
+
+	colorDisplay.textContent = pickedColor
+	reset()
+}
+
+function modeSetup(){ // setup event listeners for Easy & Hard difficulty
+	for (var i=0; i < modeButtons.length; i++){ 
 		modeButtons[i].addEventListener("click", function(){
 			modeButtons[0].classList.remove("selected");
 			modeButtons[1].classList.remove("selected");
@@ -23,13 +36,6 @@ function init(){
 			reset();
 		})
 	}
-
-	resetButton.addEventListener("click", function(){ // reset button
-		reset();
-	})
-
-	colorDisplay.textContent = pickedColor
-	reset()
 }
 
 function reset(){ // resets the game to original state
@@ -50,18 +56,18 @@ function newGame(){ // starts a new game and handles game logic
 		} else {
 			squares[i].style.display = "none";
 		}
-		squares[i].addEventListener("click", function(){
-			var clickedColor = this.style.backgroundColor;
-			if(clickedColor === pickedColor){ // correct answer
-				messageDisplay.textContent = "Correct!";
-				resetButton.textContent = "Play Again?";
-				changeColor(clickedColor)
-				h1.style.backgroundColor = clickedColor;
-			} else { // wrong answer
-				this.style.backgroundColor = "#232323";
-				messageDisplay.textContent = "Wrong";
-			}
-		})
+	squares[i].addEventListener("click", function(){
+		var clickedColor = this.style.backgroundColor;
+		if(clickedColor === pickedColor){ // correct answer
+			messageDisplay.textContent = "Correct!";
+			resetButton.textContent = "Play Again?";
+			changeColor(clickedColor)
+			h1.style.backgroundColor = clickedColor;
+		} else { // wrong answer
+			this.style.backgroundColor = "#232323";
+			messageDisplay.textContent = "Wrong";
+		}
+	})
 }}
 
 function changeColor(color){  // change colour of all squares to the argument
